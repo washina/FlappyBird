@@ -20,8 +20,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let groundCategory: UInt32 = 1 << 1
     let wallCategory: UInt32 = 1 << 2
     let scoreCategory: UInt32 = 1 << 3
-    let itemCategory: UInt32 = 1 << 4
-    let itemScoreCategory: UInt32 = 1 << 5
+    let itemScoreCategory: UInt32 = 1 << 4
+    let itemCategory: UInt32 = 1 << 5
     
     // スコア用
     var score = 0
@@ -214,7 +214,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let under_wall_y = CGFloat(under_wall_lowest_y + random_y)
             
             // キャラが通り抜ける隙間の長さ
-            let slit_length = self.frame.size.height / 3
+            let slit_length = self.frame.size.height / 4
             
             // 下側の壁を作成
             let under = SKSpriteNode(texture: wallTexture)
@@ -274,7 +274,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // 移動する距離を計算
         let itemMovingDistance = CGFloat(self.frame.size.width + ringoTexture.size().width)     // どちらもサイズが同じなのでこれでok
         // 画面外まで移動するアクションを作成
-        let moveItem = SKAction.moveBy(x: -itemMovingDistance, y: 0, duration:4.0)
+        let moveItem = SKAction.moveBy(x: -itemMovingDistance, y: 0, duration:3.0)
         // 自身を取り除くアクションを作成
         let removeItem = SKAction.removeFromParent()
         // 2つのアニメーションを順に実行するアクションを作成
@@ -289,9 +289,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // 画面のY軸の中央値
             let center_y_item = self.frame.size.height / 2
             // アイテムのY座標を上下ランダムにさせるときの最大値
-            let random_y_range_item = self.frame.size.height / 6
+            let random_y_range_item = self.frame.size.height / 4
             // りんごのY軸の下限
-            let ringo_lowest_y = UInt32(center_y_item - ringoTexture.size().height -  random_y_range_item / 2)
+            let ringo_lowest_y = UInt32(center_y_item - ringoTexture.size().height -  random_y_range_item / 4)
             // 1〜random_y_range_itemまでのランダムな整数を生成
             let random_y_ringo = arc4random_uniform( UInt32(random_y_range_item) )
             // Y軸の下限にランダムな値を足して、りんごのY座標を決定
@@ -322,7 +322,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // 次のアイテム作成までの待ち時間のアクションを作成
 //        let randomItemCount = arc4random_uniform(3)
 //        let itemWaitAnimation = SKAction.wait(forDuration: TimeInterval(randomItemCount))
-        let itemWaitAnimation = SKAction.wait(forDuration: 1)
+        let itemWaitAnimation = SKAction.wait(forDuration: 1.0)
         
         // アイテムを作成->待ち時間->アイテムを作成を無限に繰り替えるアクションを作成
         let itemRepeatForeverAnimation = SKAction.repeatForever(SKAction.sequence([createItemAnimation, itemWaitAnimation]))
@@ -353,6 +353,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if (contact.bodyA.categoryBitMask & scoreCategory) == scoreCategory || (contact.bodyB.categoryBitMask & scoreCategory) == scoreCategory {
+            print(contact.bodyA)
             // スコア用の物体と衝突した
             score += 1
             scoreLabelNode.text = "Total Score:\(score)"
@@ -383,9 +384,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
             // 衝突したりんごを消す
-            itemNode.removeFromParent()
+            //itemNode.removeFromParent()
+            contact.bodyB.node?.removeFromParent()
+            
+            /*------------------------------------------------------------------------*/
+//            var birdBody, ringoBody: SKPhysicsBody
+//            
+//            if (contact.bodyA.categoryBitMask & birdCategory) != 0 {
+//                birdBody = contact.bodyA
+//                ringoBody = contact.bodyB
+//            } else if (contact.bodyB.categoryBitMask & birdCategory) != 0 {
+//                birdBody = contact.bodyB
+//                ringoBody = contact.bodyA
+//            }
+//            if (ringoBody.categoryBitMask & itemScoreCategory) != 0 {
+//                ringoBody.node?.removeFromParent()
+//            }
+            /*------------------------------------------------------------------------*/
 
-        }else {
+            
+        } else {
             // スクロールを停止させる
             scrollNode.speed = 0
             

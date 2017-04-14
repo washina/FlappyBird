@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D820A4C91EA062E000088565 /* get.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D820A4C81EA062E000088565 /* get.mp3 */; };
 		D827E6571E9DF19500FCC393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D827E6561E9DF19500FCC393 /* AppDelegate.swift */; };
 		D827E6591E9DF19500FCC393 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D827E6581E9DF19500FCC393 /* ViewController.swift */; };
 		D827E65C1E9DF19500FCC393 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D827E65A1E9DF19500FCC393 /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D820A4C81EA062E000088565 /* get.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = get.mp3; path = ../../../app_sozai/get.mp3; sourceTree = "<group>"; };
 		D827E6531E9DF19500FCC393 /* FlappyBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlappyBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D827E6561E9DF19500FCC393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D827E6581E9DF19500FCC393 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				D827E6581E9DF19500FCC393 /* ViewController.swift */,
 				D827E65A1E9DF19500FCC393 /* Main.storyboard */,
 				D827E65D1E9DF19500FCC393 /* Assets.xcassets */,
+				D820A4C81EA062E000088565 /* get.mp3 */,
 				D827E66B1E9DF81900FCC393 /* GameScene.swift */,
 				D827E65F1E9DF19500FCC393 /* LaunchScreen.storyboard */,
 				D827E6621E9DF19500FCC393 /* Info.plist */,
@@ -140,6 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D827E6611E9DF19500FCC393 /* LaunchScreen.storyboard in Resources */,
+				D820A4C91EA062E000088565 /* get.mp3 in Resources */,
 				D827E65E1E9DF19500FCC393 /* Assets.xcassets in Resources */,
 				D827E65C1E9DF19500FCC393 /* Main.storyboard in Resources */,
 			);
@@ -316,6 +320,7 @@
 				D827E6671E9DF19600FCC393 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import AVFoundation
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -20,8 +21,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let groundCategory: UInt32 = 1 << 1
     let wallCategory: UInt32 = 1 << 2
     let scoreCategory: UInt32 = 1 << 3
-    let itemScoreCategory: UInt32 = 1 << 4
-    let itemCategory: UInt32 = 1 << 5
+    let itemCategory: UInt32 = 1 << 4
     
     // スコア用
     var score = 0
@@ -286,6 +286,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let item = SKNode()
             item.position = CGPoint(x: self.frame.size.width + ringoTexture.size().width / 2, y: 0.0)
             item.zPosition = -20.0
+            /*りんごの位置決定---------------------------------------------------------*/
             // 画面のY軸の中央値
             let center_y_item = self.frame.size.height / 2
             // アイテムのY座標を上下ランダムにさせるときの最大値
@@ -296,32 +297,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let random_y_ringo = arc4random_uniform( UInt32(random_y_range_item) )
             // Y軸の下限にランダムな値を足して、りんごのY座標を決定
             let ringo_y = CGFloat(ringo_lowest_y + random_y_ringo)
+            /*りんごの位置決定end------------------------------------------------------*/
+
             // りんごを作成
             let ringo = SKSpriteNode(texture: ringoTexture)
             ringo.position = CGPoint(x: 0.0, y: ringo_y)
-            item.addChild(ringo)
-            
-            // りんごのスプライトに物理演算を設定する
             ringo.physicsBody = SKPhysicsBody(rectangleOf: ringoTexture.size())
-            ringo.physicsBody?.categoryBitMask = self.itemCategory
-            // 衝突のときに動かないように設定する
             ringo.physicsBody?.isDynamic = false
-            
-            // アイテムスコアアップ用のノード
-            let itemScoreNode = SKNode()
-            itemScoreNode.position = CGPoint(x: ringo.size.width + self.bird.size.width / 2, y: self.frame.height / 2.0)
-            itemScoreNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: ringo.size.width, height: ringo.size.height))
-            itemScoreNode.physicsBody?.isDynamic = false
-            itemScoreNode.physicsBody?.categoryBitMask = self.itemScoreCategory
-            itemScoreNode.physicsBody?.contactTestBitMask = self.birdCategory
-            item.addChild(itemScoreNode)
+            ringo.physicsBody?.categoryBitMask = self.itemCategory
+            ringo.physicsBody?.contactTestBitMask = self.birdCategory
+            item.addChild(ringo)
             
             item.run(itemAnimation)
             self.itemNode.addChild(item)
         })
         // 次のアイテム作成までの待ち時間のアクションを作成
-//        let randomItemCount = arc4random_uniform(3)
-//        let itemWaitAnimation = SKAction.wait(forDuration: TimeInterval(randomItemCount))
         let itemWaitAnimation = SKAction.wait(forDuration: 1.0)
         
         // アイテムを作成->待ち時間->アイテムを作成を無限に繰り替えるアクションを作成
@@ -367,7 +357,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 userDefaults.synchronize()
             }
             
-        } else if (contact.bodyA.categoryBitMask & itemScoreCategory) == itemScoreCategory || (contact.bodyB.categoryBitMask & itemScoreCategory) == itemScoreCategory{
+        } else if (contact.bodyA.categoryBitMask & itemCategory) == itemCategory || (contact.bodyB.categoryBitMask & itemCategory) == itemCategory{
+            // 効果音を鳴らす
+            let sound = SKAction.playSoundFileNamed("get.mp3", waitForCompletion: true)
+            let soundEffect = SKAction.repeat(sound, count: 0)
+            self.run(soundEffect)
             // アイテムスコア用の物体と衝突した
             itemScore += 1
             score += 1
@@ -384,24 +378,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
             // 衝突したりんごを消す
-            //itemNode.removeFromParent()
-            contact.bodyB.node?.removeFromParent()
-            
-            /*------------------------------------------------------------------------*/
-//            var birdBody, ringoBody: SKPhysicsBody
-//            
-//            if (contact.bodyA.categoryBitMask & birdCategory) != 0 {
-//                birdBody = contact.bodyA
-//                ringoBody = contact.bodyB
-//            } else if (contact.bodyB.categoryBitMask & birdCategory) != 0 {
-//                birdBody = contact.bodyB
-//                ringoBody = contact.bodyA
-//            }
-//            if (ringoBody.categoryBitMask & itemScoreCategory) != 0 {
-//                ringoBody.node?.removeFromParent()
-//            }
-            /*------------------------------------------------------------------------*/
-
+            contact.bodyA.node?.removeFromParent()
             
         } else {
             // スクロールを停止させる

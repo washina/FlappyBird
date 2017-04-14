@@ -268,8 +268,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // りんごとみかんの画像を読み込む
         let ringoTexture = SKTexture(imageNamed: "ringo")
         ringoTexture.filteringMode = SKTextureFilteringMode.linear
-        //let mikanTexture = SKTexture(imageNamed: "mikan")
-        //mikanTexture.filteringMode = SKTextureFilteringMode.linear
         
         // 移動する距離を計算
         let itemMovingDistance = CGFloat(self.frame.size.width + ringoTexture.size().width)     // どちらもサイズが同じなのでこれでok
@@ -286,7 +284,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let item = SKNode()
             item.position = CGPoint(x: self.frame.size.width + ringoTexture.size().width / 2, y: 0.0)
             item.zPosition = -20.0
-            /*りんごの位置決定---------------------------------------------------------*/
             // 画面のY軸の中央値
             let center_y_item = self.frame.size.height / 2
             // アイテムのY座標を上下ランダムにさせるときの最大値
@@ -297,7 +294,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let random_y_ringo = arc4random_uniform( UInt32(random_y_range_item) )
             // Y軸の下限にランダムな値を足して、りんごのY座標を決定
             let ringo_y = CGFloat(ringo_lowest_y + random_y_ringo)
-            /*りんごの位置決定end------------------------------------------------------*/
 
             // りんごを作成
             let ringo = SKSpriteNode(texture: ringoTexture)
